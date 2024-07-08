@@ -1,7 +1,5 @@
 pipeline{
-    agent {
-        label "master"
-    }
+    agent any
     environment {
         K6_SCRIPT = "${WORKSPACE}/jobs/ithome-day08-sample-k6-testing/ithome-sample.js"
     }
