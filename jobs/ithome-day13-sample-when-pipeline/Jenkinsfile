@@ -1,0 +1,39 @@
+pipeline{
+    agent any
+    parameters {
+        choice(name: 'animal', choices: ['cat', 'dog', 'fish'])
+    }
+    stages{
+        stage("Deploy"){
+            parallel{
+                stage("animal cat"){
+                    when {
+                        expression { params.animal == "cat" } 
+                    }
+                    steps{
+                        // do staging processing
+                        echo "deploy to animal cat"
+                    }
+                }
+                stage("animal dog"){
+                    when {
+                        expression { params.animal == "dog" } 
+                    }
+                    steps{
+                        // do uat processing
+                        echo "deploy to animal dog"
+                    }
+                }
+                stage("animal fish"){
+                    when {
+                        expression { params.animal == "fish" } 
+                    }
+                    steps{
+                        // do prod processing
+                        echo "deploy to animal fish"
+                    }
+                }
+            }
+        }
+    }
+}
