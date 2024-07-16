@@ -1,0 +1,43 @@
+pipeline{
+    agent any
+    environment {
+        IMAGE_REFERENCE = "ghcr.io/ben4932042/ithome-crawler:latest"
+    }
+
+    stages{
+        stage("Pull github project"){
+            steps{
+                sh "git clone https://github.com/wl02267687/ithome-jenkins.git"
+                sh "cd jenkins-ithome"
+                sh "mv jenkins-ithome/jobs/ithome-iron-post-check-cronjob/* ."
+            }
+        }
+        stage("Lint"){
+            steps{
+                sh "pylint --fail-under=10 src"
+            }
+        }
+        stage("Test"){
+            steps{
+                sh "pytest tests"
+            }
+        }
+        stage("Build"){
+            steps{
+                echo "docker build -t ${IMAGE_REFERENCE} ."
+            }
+        }
+        stage("Push"){
+                steps{
+                    sh "docker push ${IMAGE_REFERENCE}"
+                }
+            }
+        }
+        stage("House keeping"){
+                steps{
+                    sh "rm -rf ."
+                }
+            }
+        }
+    }
+}
