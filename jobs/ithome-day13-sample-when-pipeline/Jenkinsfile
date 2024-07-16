@@ -1,7 +1,7 @@
 pipeline{
     agent any
     parameters {
-        choice(name: 'animal', choices: ['cat', 'dog', 'fish'])
+        choice(name: 'animal', choices: ['cat', 'dog', 'fish', 'other'])
     }
     stages{
         stage("Deploy"){
